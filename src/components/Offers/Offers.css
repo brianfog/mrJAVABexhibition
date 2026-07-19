@@ -1,0 +1,68 @@
+.offers-section {
+  padding: 85px 20px 32px;
+  margin: 0 -20px; /* Negate the container padding (20px from .container class) */
+}
+
+.offers-loading {
+  text-align: center;
+  padding: 40px;
+  color: #73757c;
+  font-size: 16px;
+}
+
+.offers-container {
+  display: flex;
+
+  flex-direction: column;
+  gap: 28px;
+}
+
+.offers-title {
+  color: #0260eb;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  font-family: 'Yekan Bakh', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.offers-list {
+  display: flex;
+  gap: 7px;
+  justify-content: space-between;
+}
+
+.offer-item {
+  display: flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  color: #121f2f;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 25px;
+  border: 1px solid rgba(153, 153, 153, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .offers-section {
+    padding: 85px 20px 32px; /* Keep base padding-top for dynamic adjustment */
+  }
+
+  .offers-container {
+    gap: 20px;
+  }
+
+  .offers-list {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .offers-section {
+    padding: 85px 20px 32px; /* Keep base padding-top for dynamic adjustment */
+  }
+}

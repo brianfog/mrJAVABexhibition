@@ -1,0 +1,337 @@
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 200px; /* Will be dynamically adjusted by JS */
+}
+
+.chat-hero-section {
+  position: relative;
+}
+
+.chat-hero-section .hero {
+  position: relative;
+}
+
+/* Chat input section - fixed at bottom of Hero section */
+/* Positioned relative to .hero element (sibling selector) */
+.chat-hero-section .hero ~ .chat-input-section {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0;
+  box-sizing: border-box;
+}
+
+.chat-response-box-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 999;
+  /* Grow upward from bottom */
+  flex-shrink: 0;
+}
+
+.chat-response-box {
+  width: 90%;
+  max-width: 952px;
+  border-radius: 24px;
+  border: 1px solid #ccdffb;
+  background: #fff;
+  padding: 40px 30px;
+  box-sizing: border-box;
+  /* Grow upward */
+  margin-bottom: 0;
+}
+
+.chat-response-box-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.chat-response-message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* User messages - align to right */
+.chat-response-message-container.user-message {
+  align-items: flex-end;
+}
+
+/* Model messages - align to left, expand to full width */
+.chat-response-message-container.model-message {
+  align-items: flex-start;
+  width: 100%;
+  padding: 16px 12px 22px;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 6px 6px 6px 6px;
+  background: #e8f4fc;
+  box-sizing: border-box;
+}
+
+/* User message bubble - right side (existing style) */
+.chat-response-message.user-message-bubble {
+  box-sizing: content-box;
+  display: flex;
+  width: fit-content;
+  max-width: 407px;
+  min-height: 40px;
+  padding: 9px 16px 8px 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px 6px 6px 6px;
+  background: #0260eb;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  text-align: right;
+}
+
+/* Model message bubble - left side */
+.chat-response-message.model-message-bubble {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  padding: 0;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 0;
+  background: transparent;
+  color: #121f2f;
+  font-size: 16px;
+  font-weight: 400;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  text-align: right;
+}
+
+/* HTML content styling - full width for model messages */
+.chat-response-message.model-message-bubble.html-content {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  white-space: normal;
+  display: block;
+}
+
+/* Ensure HTML content inside model messages is properly styled */
+.chat-response-message-container.model-message .html-content {
+  width: 100%;
+  /* Allow Tailwind to apply its styles */
+  isolation: isolate;
+  /* Apply site font while keeping Tailwind styles */
+  font-family: 'Yekan Bakh', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.chat-response-message-container.model-message .html-content * {
+  max-width: 100%;
+  box-sizing: border-box;
+  /* Apply site font to all elements while keeping Tailwind styles */
+  font-family: inherit;
+}
+
+/* Prevent our custom styles from overriding Tailwind utility classes */
+.chat-response-message-container.model-message
+  .html-content
+  [class*='tailwind'],
+.chat-response-message-container.model-message .html-content [class*='bg-'],
+.chat-response-message-container.model-message .html-content [class*='text-'],
+.chat-response-message-container.model-message .html-content [class*='p-'],
+.chat-response-message-container.model-message .html-content [class*='m-'],
+.chat-response-message-container.model-message .html-content [class*='flex'],
+.chat-response-message-container.model-message .html-content [class*='grid'],
+.chat-response-message-container.model-message .html-content [class*='rounded'],
+.chat-response-message-container.model-message .html-content [class*='shadow'] {
+  /* Let Tailwind handle these classes */
+  box-sizing: border-box;
+  /* Keep font inheritance */
+  font-family: inherit;
+}
+
+/* Ensure Tailwind CSS and other external styles work */
+.chat-response-message-container.model-message .html-content iframe,
+.chat-response-message-container.model-message .html-content script {
+  max-width: 100%;
+}
+
+/* HTML content styling - full width for model messages */
+.chat-response-message.model-message-bubble.html-content {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  white-space: normal;
+}
+
+/* Ensure HTML content inside model messages is properly styled */
+.chat-response-message-container.model-message .html-content {
+  width: 100%;
+}
+
+.chat-response-message-container.model-message .html-content * {
+  max-width: 100%;
+}
+
+/* Ensure Tailwind CSS and other external styles work */
+.chat-response-message-container.model-message .html-content iframe,
+.chat-response-message-container.model-message .html-content script {
+  max-width: 100%;
+}
+
+.chat-response-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: fit-content;
+  max-width: 407px;
+}
+
+.chat-response-file-item {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.chat-response-file-preview-image {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+  border: 1px solid rgba(153, 153, 153, 0.2);
+}
+
+.chat-response-file-preview-pdf,
+.chat-response-file-preview-generic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #121f2f;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.chat-response-file-preview-pdf svg,
+.chat-response-file-preview-generic svg {
+  flex-shrink: 0;
+  color: #0260eb;
+}
+
+.chat-response-file-preview-pdf span,
+.chat-response-file-preview-generic span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.chat-response-content {
+  min-height: 100px;
+  /* Response content will be displayed here */
+}
+
+.error-message {
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.chat-input-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+/* Ensure ChatInput container matches response box width */
+.chat-input-wrapper .chat-input-container {
+  width: 90%;
+  max-width: 952px;
+}
+
+/* Responsive design - Tablet (640px - 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .chat-hero-section .hero ~ .chat-input-section {
+    transform: translateX(-50%) translateY(-50px);
+  }
+
+  .chat-response-box {
+    width: 90%;
+    padding: 20px 10px 200px;
+  }
+
+  .chat-response-message {
+    width: auto;
+    max-width: 407px;
+  }
+
+  .chat-response-files {
+    max-width: 407px;
+  }
+
+  .chat-response-file-preview-image {
+    max-width: 250px;
+    max-height: 250px;
+  }
+}
+
+/* Responsive design - Mobile (max-width: 639px) */
+@media (max-width: 639px) {
+  .chat-hero-section .hero ~ .chat-input-section {
+    transform: translateX(-50%) translateY(-50px);
+  }
+
+  .chat-response-box {
+    width: 90%;
+    max-width: calc(100% - 32px);
+    padding: 20px 10px 200px;
+  }
+
+  .chat-response-message {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .chat-response-files {
+    max-width: 100%;
+  }
+
+  .chat-response-file-preview-image {
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .chat-response-file-preview-pdf span,
+  .chat-response-file-preview-generic span {
+    max-width: 200px;
+  }
+}

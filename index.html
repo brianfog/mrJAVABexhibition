@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>مستر جواب - MRJAVAB</title>
+    <!-- Tailwind CSS CDN for model responses -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google reCAPTCHA v3 -->
+    <script
+      src="https://www.google.com/recaptcha/api.js?render=6LeTbNwrAAAAAKacYsGjcgcakDrVu7ea5kCKTafv"
+      onload="console.log('✅ reCAPTCHA script onload fired - script loaded successfully'); window.__recaptchaScriptLoaded = true;"
+      onerror="console.error('❌ reCAPTCHA script failed to load'); window.__recaptchaScriptError = true;"
+    ></script>
+    <script>
+      // Track script loading
+      const scriptTag = document.querySelector('script[src*="recaptcha/api.js"]');
+      
+      // Monitor when grecaptcha becomes available
+      let checkCount = 0;
+      const checkGrecaptcha = setInterval(() => {
+        checkCount++;
+        if (typeof window.grecaptcha !== 'undefined') {
+          
+          clearInterval(checkGrecaptcha);
+        } else if (checkCount > 100) {
+          clearInterval(checkGrecaptcha);
+        }
+      }, 100);
+      
+      // Monitor network requests for /reload endpoint
+      const originalFetch = window.fetch;
+      window.fetch = function(...args) {
+        const url = args[0];
+        if (typeof url === 'string' && url.includes('recaptcha/api2/reload')) {
+          console.trace('Call stack for /reload:');
+        }
+        return originalFetch.apply(this, args);
+      };
+      
+      // Also monitor XMLHttpRequest
+      const originalXHROpen = XMLHttpRequest.prototype.open;
+      XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+        if (typeof url === 'string' && url.includes('recaptcha/api2/reload')) {
+          console.trace('Call stack for /reload (XHR):');
+        }
+        return originalXHROpen.apply(this, [method, url, ...rest]);
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

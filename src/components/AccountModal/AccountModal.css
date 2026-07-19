@@ -1,0 +1,90 @@
+.account-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.account-modal-image-container {
+  width: 69px;
+  height: 69px;
+  border-radius: 1000px;
+  background: #ecfff3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.account-modal-image {
+  width: 38px;
+  height: 57px;
+  object-fit: contain;
+}
+
+.account-modal-title {
+  color: #0260eb;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  font-family: 'Yekan Bakh', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.account-modal-description {
+  color: #0c0c0c;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.6;
+  font-family: 'Yekan Bakh', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.account-modal-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 24px;
+  background: #0260eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Yekan Bakh', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.account-modal-button:hover {
+  background: #0250d0;
+  transform: translateY(-2px);
+}
+
+.account-modal-button:active {
+  transform: translateY(0);
+}
+
+.account-modal-button .button-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .account-modal-content {
+    gap: 24px;
+  }
+
+  .account-modal-title {
+    font-size: 18px;
+  }
+
+  .account-modal-description {
+    font-size: 13px;
+  }
+}
