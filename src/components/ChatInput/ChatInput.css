@@ -124,6 +124,15 @@
   scrollbar-width: thin;
 }
 
+@media screen and (max-width : 490px) {
+
+  .chat-input-files-container{
+    grid-template-columns: repeat(2,1fr);
+    aspect-ratio: 2;
+  }
+  
+}
+
 /* File info display */
 .chat-input-file-info {
   display: flex;

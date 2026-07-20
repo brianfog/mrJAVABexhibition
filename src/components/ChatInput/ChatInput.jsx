@@ -14,6 +14,7 @@ import './ChatInput.css';
 import { answerModeOptions, questionTypeOptions } from './constants';
 import AccountModal from '../AccountModal/AccountModal';
 import doc_ico from './doc_ic.jpg';
+import Pdf_Thumbnail from './PDF_thumbnail';
 
 const pathToQuestionType = {
   '/': 'problem-solver',
@@ -702,7 +703,11 @@ const ChatInput = ({
                     </button>
 
                     <div className='chat-input-file-vis'>
-                      <img src={file.type.startsWith("image/") ? UEL : doc_ico} />
+                      {
+                        file.type.startsWith("image/") && (<img src={UEL}/>)
+                        ||
+                        file.type.startsWith("application/pdf") && (<Pdf_Thumbnail firstpage={UEL}/>)
+                      }
                     </div>
                     <button
                       type="button"

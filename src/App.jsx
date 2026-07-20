@@ -28,6 +28,7 @@ import FunctionsList from './pages/FunctionsList';
 import Login from './pages/Login';
 import Chat from './pages/Chat';
 import PaymentResult from './pages/PaymentResult';
+import "./services/pdfjsConfiguration";
 
 function AppContent() {
   const location = useLocation();
