@@ -126,9 +126,8 @@ function AppContent() {
       {/* Mobile Overlay */}
       {!isDesktop && !isLoginPage && (
         <div
-          className={`mobile-sidebar-overlay ${
-            isMobileSidebarOpen ? 'overlay-visible' : ''
-          }`}
+          className={`mobile-sidebar-overlay ${isMobileSidebarOpen ? 'overlay-visible' : ''
+            }`}
           onClick={() => setIsMobileSidebarOpen(false)}
         />
       )}
@@ -172,11 +171,16 @@ function AppContent() {
   );
 }
 
+
 function App() {
+
+
   return (
+
     <Router>
       <AppContent />
     </Router>
+
   );
 }
 

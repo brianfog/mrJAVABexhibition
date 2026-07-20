@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import { useProfile } from '../../hooks/useAuth';
@@ -498,6 +498,7 @@ const ChatInput = ({
       return;
     }
 
+
     const messageText = question.trim();
     const token = getToken();
 
@@ -549,6 +550,7 @@ const ChatInput = ({
 
   const canSubmit = question.trim() || uploadedFiles.length > 0;
 
+
   return (
     <div ref={containerRef} className="chat-input-container">
       <div className="chat-input-inner">
@@ -598,7 +600,7 @@ const ChatInput = ({
                         className={`${questionType === option.value ? 'active' : ''} ${option.locked && !canAccessLockedOptions ? 'locked' : ''}`}
                       >
                         {option.label}
-                        {option.locked  && !canAccessLockedOptions && (
+                        {option.locked && !canAccessLockedOptions && (
                           <img
                             src="/icons/lock.svg"
                             alt="قفل"
@@ -685,47 +687,48 @@ const ChatInput = ({
           {uploadedFiles.length > 0 && (
             <div className="chat-input-files-container">
               {uploadedFiles.map((file, index) => {
-                
+
                 const UEL = URL.createObjectURL(file);
 
-                return(
-                <div
-                  key={`${file.name}-${index}`}
-                  className="chat-input-file-info"
-                >
-
-                  <button type='button' onClick={() => {window.open(UEL).focus()}} className='Preview-IFrame-btn'>
-                    {"نمایش"}
-                    <span> {file.type.startsWith("image/") ? "عکس" : "فایل"}</span>
-                  </button>
-
-                  <div className='chat-input-file-vis'>
-                    <img src={file.type.startsWith("image/") ? UEL : doc_ico} />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveFile(index)}
-                    className="chat-input-file-remove"
-                    aria-label="حذف فایل"
+                return (
+                  <div
+                    key={`${file.name}-${index}`}
+                    className="chat-input-file-info"
                   >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+
+                    <button type='button' onClick={() => { window.open(UEL).focus() }} className='Preview-IFrame-btn'>
+                      {"نمایش"}
+                      <span> {file.type.startsWith("image/") ? "عکس" : "فایل"}</span>
+                    </button>
+
+                    <div className='chat-input-file-vis'>
+                      <img src={file.type.startsWith("image/") ? UEL : doc_ico} />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFile(index)}
+                      className="chat-input-file-remove"
+                      aria-label="حذف فایل"
                     >
-                      <path
-                        d="M12 4L4 12M4 4L12 12"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              )})}
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 4L4 12M4 4L12 12"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                )
+              })}
             </div>
           )}
 

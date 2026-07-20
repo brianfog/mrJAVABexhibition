@@ -2,11 +2,17 @@ import './HowToUse.css';
 import Offers from '../Offers/Offers';
 
 const HowToUse = ({ data }) => {
+
   return (
     <section className="how-to-use">
       <Offers />
 
       <div className="container">
+
+        <div className='spaceDiv' style={{height: `100px`}}>
+        </div>
+
+
         <h2 className="section-title">چطوری استفاده کنم</h2>
         <p className="section-subtitle">مراحل استفاده از مستر جواب</p>
         <div className="steps-container">
