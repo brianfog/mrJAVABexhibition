@@ -703,7 +703,7 @@ const ChatInput = ({
 
                     <div className='chat-input-file-vis'>
                       {
-                        (<img src={file.type.startsWith('image/') ? UEL : doc_ico}/>)
+                        (<img src={file.type.startsWith('image/') ? UEL : doc_ico} style={{background: file.type.startsWith('image/') ? `black` : `none`}}/>)
                       }
                     </div>
                     <button
