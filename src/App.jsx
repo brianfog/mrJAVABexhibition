@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
+import context_catch from './configureContext';
 import {
   BrowserRouter as Router,
   Routes,
@@ -175,11 +176,17 @@ function AppContent() {
 function App() {
 
 
+  
+
+  const [spacediv, setspace] = useState(false);
+
   return (
 
-    <Router>
-      <AppContent />
-    </Router>
+    <context_catch.Provider value={{ spacediv, setspace }}>
+      <Router>
+        <AppContent />
+      </Router>
+    </context_catch.Provider>
 
   );
 }

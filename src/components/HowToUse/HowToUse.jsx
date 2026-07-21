@@ -1,7 +1,11 @@
 import './HowToUse.css';
 import Offers from '../Offers/Offers';
+import { useContext } from 'react';
+import context_catch from '../../configureContext';
 
 const HowToUse = ({ data }) => {
+
+  const {spacediv} = useContext(context_catch);
 
   return (
     <section className="how-to-use">
@@ -9,8 +13,8 @@ const HowToUse = ({ data }) => {
 
       <div className="container">
 
-        <div className='spaceDiv' style={{height: `100px`}}>
-        </div>
+        { spacediv && (<div className='spaceDiv'>
+        </div>)}
 
 
         <h2 className="section-title">چطوری استفاده کنم</h2>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo} from 'react';
+import { useState, useRef, useEffect, useMemo, useContext} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import { useProfile } from '../../hooks/useAuth';
@@ -14,6 +14,7 @@ import './ChatInput.css';
 import { answerModeOptions, questionTypeOptions } from './constants';
 import AccountModal from '../AccountModal/AccountModal';
 import doc_ico from './doc_ic.png';
+import context_catch from '../../configureContext';
 
 const pathToQuestionType = {
   '/': 'problem-solver',
@@ -550,6 +551,7 @@ const ChatInput = ({
 
   const canSubmit = question.trim() || uploadedFiles.length > 0;
 
+  const { setspace } = useContext(context_catch);
 
   return (
     <div ref={containerRef} className="chat-input-container">
@@ -684,11 +686,15 @@ const ChatInput = ({
             }}
           />
 
+          {uploadedFiles.length == 0 && setspace(false)}
+
           {uploadedFiles.length > 0 && (
             <div className="chat-input-files-container">
               {uploadedFiles.map((file, index) => {
 
                 const UEL = URL.createObjectURL(file);
+
+                setspace(true);
 
                 return (
                   <div

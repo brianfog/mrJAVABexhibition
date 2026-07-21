@@ -8,6 +8,18 @@
   transition: margin-top 0.3s ease;
 }
 
+.spaceDiv{
+  height: 450px;
+  width: 100%;
+}
+
+@media screen and (max-width: 705px) {
+  .spaceDiv{
+    height: 350px;
+  }
+
+}
+
 .section-title {
   color: #222;
   text-align: center;
