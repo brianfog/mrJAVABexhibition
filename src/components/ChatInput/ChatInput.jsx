@@ -13,8 +13,7 @@ import { useToast } from '../../contexts/ToastContext';
 import './ChatInput.css';
 import { answerModeOptions, questionTypeOptions } from './constants';
 import AccountModal from '../AccountModal/AccountModal';
-import doc_ico from './doc_ic.jpg';
-import Pdf_Thumbnail from './PDF_thumbnail';
+import doc_ico from './doc_ic.png';
 
 const pathToQuestionType = {
   '/': 'problem-solver',
@@ -704,9 +703,7 @@ const ChatInput = ({
 
                     <div className='chat-input-file-vis'>
                       {
-                        file.type.startsWith("image/") && (<img src={UEL}/>)
-                        ||
-                        file.type.startsWith("application/pdf") && (<Pdf_Thumbnail firstpage={UEL}/>)
+                        (<img src={file.type.startsWith('image/') ? UEL : doc_ico}/>)
                       }
                     </div>
                     <button
