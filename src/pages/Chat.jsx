@@ -631,7 +631,7 @@ const Chat = () => {
   return (
     <div className="chat-page" ref={chatPageRef}>
       <div className="chat-hero-section">
-        <Hero hideChatInput={true} />
+        <Hero hideChatInput={true} pad={[{sender : 'user',text : "hello"}]}/>
         <div className="chat-input-section" ref={chatInputSectionRef}>
           {isLoading && chatId ? (
             <div className="chat-response-box-wrapper">
@@ -723,7 +723,7 @@ const Chat = () => {
             </div>
           )}
           <div className="chat-input-wrapper">
-            <ChatInput onSubmit={handleChatSubmit} chatId={chatId} />
+            <ChatInput previousMsg={allMessages} onSubmit={handleChatSubmit} chatId={chatId}/>
           </div>
         </div>
       </div>

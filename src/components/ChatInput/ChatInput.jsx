@@ -35,8 +35,8 @@ const questionTypeToPath = {
 
 const ChatInput = ({
   disabled = false,
-  chatId = null,
-  // previousMessages = [],
+  chatId = chatId,
+  previousMsg,
   onSubmit,
 }) => {
   const navigate = useNavigate();
@@ -261,8 +261,8 @@ const ChatInput = ({
     // Wait for prompts to be loaded before sending the message
     const canSendMessage =
       pendingSubmission &&
-      user &&
-      token &&
+      !user &&
+      !token &&
       isChatPage &&
       !hasSentPendingRef.current &&
       !promptsLoading &&
@@ -436,6 +436,7 @@ const ChatInput = ({
         files: formData.files || [],
         prompts: prompts,
         chatToken,
+        previousMessages : previousMsg
       });
 
       const responseText = extractResponseText(response);
@@ -494,16 +495,16 @@ const ChatInput = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    /*
     if (!question.trim() && uploadedFiles.length === 0) {
       return;
-    }
+    }*/
 
 
     const messageText = question.trim();
     const token = getToken();
 
-    if (!token || !user) {
+    /*if (!token || !user) {
       // Store form data in navigation state for after login
       const formData = {
         text: messageText,
@@ -538,7 +539,7 @@ const ChatInput = ({
       });
       return;
     }
-
+    */
     const formData = {
       text: messageText,
       answerMode,
