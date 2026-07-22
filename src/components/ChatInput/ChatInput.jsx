@@ -463,7 +463,7 @@ const ChatInput = ({
           );
         }
       }
-
+      //12
       // Only navigate to /chat if we're not already on a chat page
       // If we're on /chat/:chatId, stay there to continue the conversation
       if (!location.pathname.startsWith('/chat')) {
