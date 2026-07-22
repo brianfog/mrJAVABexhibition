@@ -74,9 +74,9 @@ export const chatService = {
   }) => {
     const chatToken = providedChatToken || getChatToken();
 
-    /*if (!chatToken) {
+    if (!chatToken) {
       throw new Error('Authentication required');
-    }*/
+    }
 
     const promptValue = getPromptValue(questionType, prompts);
 
@@ -121,7 +121,7 @@ export const chatService = {
       body: formData,
     });
 
-    /*
+    
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       const errorMessage =
@@ -133,7 +133,7 @@ export const chatService = {
       error.status = response.status;
       error.data = errorData;
       throw error;
-    }*/
+    }
 
     return await response.json();
   },

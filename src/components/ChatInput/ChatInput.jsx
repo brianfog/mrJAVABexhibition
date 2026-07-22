@@ -261,8 +261,8 @@ const ChatInput = ({
     // Wait for prompts to be loaded before sending the message
     const canSendMessage =
       pendingSubmission &&
-      !user &&
-      !token &&
+      user &&
+      token &&
       isChatPage &&
       !hasSentPendingRef.current &&
       !promptsLoading &&
@@ -504,7 +504,7 @@ const ChatInput = ({
     const messageText = question.trim();
     const token = getToken();
 
-    /*if (!token || !user) {
+    if (!token || !user) {
       // Store form data in navigation state for after login
       const formData = {
         text: messageText,
@@ -539,7 +539,7 @@ const ChatInput = ({
       });
       return;
     }
-    */
+    
     const formData = {
       text: messageText,
       answerMode,

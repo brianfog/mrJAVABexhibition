@@ -631,7 +631,7 @@ const Chat = () => {
   return (
     <div className="chat-page" ref={chatPageRef}>
       <div className="chat-hero-section">
-        <Hero hideChatInput={true} pad={[{sender : 'user',text : "hello"}]}/>
+        <Hero hideChatInput={true} />
         <div className="chat-input-section" ref={chatInputSectionRef}>
           {isLoading && chatId ? (
             <div className="chat-response-box-wrapper">

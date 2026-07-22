@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import ChatInput from '../ChatInput/ChatInput';
 import './Hero.css';
 
-const Hero = ({ hideChatInput = false}) => {
+const Hero = ({ hideChatInput = false }) => {
   const navigate = useNavigate();
 
   return (
@@ -34,7 +34,7 @@ const Hero = ({ hideChatInput = false}) => {
       </div>
       {!hideChatInput && (
         <div className="hero-chat-input-wrapper">
-          <ChatInput/>
+          <ChatInput />
         </div>
       )}
     </section>
