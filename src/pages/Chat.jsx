@@ -561,15 +561,19 @@ const Chat = () => {
   };
 
   const createFilePreview = (file) => {
-    if (file.type.startsWith('image/')) {
+
+    const filesType = file.type ?? file.mimeType;
+    const fileSrc = file.mimeType ? file.url : URL.createObjectURL(file) ;
+
+    if (filesType?.startsWith('image/')) {
       return (
         <img
-          src={URL.createObjectURL(file)}
+          src={fileSrc}
           alt={file.name}
           className="chat-response-file-preview-image"
         />
       );
-    } else if (file.type === 'application/pdf') {
+    } else if (filesType === 'application/pdf') {
       return (
         <div className="chat-response-file-preview-pdf">
           <svg

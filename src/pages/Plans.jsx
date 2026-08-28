@@ -5,7 +5,7 @@ const Plans = () => {
   return (
     <>
       <Hero hideChatInput={true} />
-      <PlansComponent />
+      <PlansComponent VIP={false} />
     </>
   );
 };

@@ -259,16 +259,26 @@
   margin: 0;
 }
 
-.buy-credit-container {
+.credit-box-container{
   width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.buy-credit-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
   padding: 12px;
   background: linear-gradient(90deg, #506bf8 0%, #906df1 100%);
   border-radius: 8px;
   cursor: pointer;
   transition: opacity 0.3s;
+}
+
+.buy-credit-container:last-child{
+  background: linear-gradient(90deg, red 0%, #906df1 100%);
 }
 
 .buy-credit-container:hover {
@@ -296,6 +306,7 @@
   font-style: normal;
   font-size: 14px;
   color: #ffffff;
+  text-align: center;
 }
 
 .credit-arrow {

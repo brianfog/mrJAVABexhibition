@@ -4,13 +4,14 @@ import { useProfile } from '../../hooks/useAuth';
 import { useToast } from '../../contexts/ToastContext';
 import { paymentService } from '../../services/paymentService';
 import './Plans.css';
-import { PLANS_DATA } from './constants';
+import { PLANS_DATA_nonVIP , PLANS_DATA_VIP } from './constants';
 
-const Plans = () => {
+const Plans = ({VIP}) => {
   const navigate = useNavigate();
   const { data: user } = useProfile();
   const { showToast } = useToast();
   const [loadingPlanId, setLoadingPlanId] = useState(null);
+  const [PLANS_DATA, setPLANS] = useState(VIP ? PLANS_DATA_VIP : PLANS_DATA_nonVIP)
 
   const handlePlanClick = async (plan) => {
     if (!user) {

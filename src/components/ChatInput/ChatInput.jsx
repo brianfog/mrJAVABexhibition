@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, useContext} from 'react';
+import { useState, useRef, useEffect, useMemo, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import { useProfile } from '../../hooks/useAuth';
@@ -23,6 +23,8 @@ const pathToQuestionType = {
   '/quiz-maker': 'quiz-maker',
   '/book-chat': 'book-chat',
   '/summarizer': 'summarizer',
+  '/learning': 'learning',
+  '/contest': 'contest',
 };
 
 const questionTypeToPath = {
@@ -31,11 +33,13 @@ const questionTypeToPath = {
   'quiz-maker': '/quiz-maker',
   'book-chat': '/book-chat',
   summarizer: '/summarizer',
+  'learning': '/learning',
+  'contest': '/contest',
 };
 
 const ChatInput = ({
   disabled = false,
-  chatId = chatId,
+  chatId=null,
   previousMsg,
   onSubmit,
 }) => {
@@ -51,7 +55,7 @@ const ChatInput = ({
   const { showToast } = useToast();
   const [question, setQuestion] = useState('');
   const [answerMode, setAnswerMode] = useState('quick');
-  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const { setIsAccountModalOpen ,setModalVIP } = useContext(context_catch);
   useEffect(() => {
     const pendingOfferValue = localStorage.getItem('pendingOfferValue');
     if (pendingOfferValue) {
@@ -197,7 +201,9 @@ const ChatInput = ({
     const htmlRegex = /<\/?[a-z][\s\S]*>/i;
     return htmlRegex.test(str);
   };
-  const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2;
+  const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2 || Number(user?.type) === 3;
+
+
 
   const extractResponseText = (response) => {
     try {
@@ -436,7 +442,7 @@ const ChatInput = ({
         files: formData.files || [],
         prompts: prompts,
         chatToken,
-        previousMessages : previousMsg
+        previousMessages: previousMsg
       });
 
       const responseText = extractResponseText(response);
@@ -539,7 +545,7 @@ const ChatInput = ({
       });
       return;
     }
-    
+
     const formData = {
       text: messageText,
       answerMode,
@@ -556,6 +562,7 @@ const ChatInput = ({
 
   return (
     <div ref={containerRef} className="chat-input-container">
+
       <div className="chat-input-inner">
         <form onSubmit={handleSubmit} className="chat-input-form">
           <div className="chat-input-selectors-section chat-input-mobile-selectors">
@@ -579,11 +586,20 @@ const ChatInput = ({
                     const handleOptionClick = () => {
                       if (option.locked && !canAccessLockedOptions) {
                         setIsAccountModalOpen(true);
-                        navigate('/plans');
+
 
                         return;
 
                       }
+                      if(!option.locked && canAccessLockedOptions && canAccessLockedOptions < 3){
+                        
+                        setIsAccountModalOpen(true);
+                        setModalVIP(true);
+
+                        return
+
+                      }
+                      
                       setManualQuestionType(option.value);
                       setShowQuestionTypeSelector(false);
 
@@ -703,15 +719,24 @@ const ChatInput = ({
                     className="chat-input-file-info"
                   >
 
-                    <button type='button' onClick={() => { window.open(UEL).focus() }} className='Preview-IFrame-btn'>
+                    {/*<button type='button' onClick={() => { window.open(UEL).focus() }} className='Preview-IFrame-btn'>
                       {"نمایش"}
                       <span> {file.type.startsWith("image/") ? "عکس" : "فایل"}</span>
-                    </button>
+                    </button>*/}
+
 
                     <div className='chat-input-file-vis'>
                       {
-                        (<img src={file.type.startsWith('image/') ? UEL : doc_ico} style={{background: file.type.startsWith('image/') ? `black` : `none`}}/>)
+                        (<img src={file.type.startsWith('image/') ? UEL : doc_ico} alt={file.name} style={{ background: file.type.startsWith('image/') ? `black` : `none` }} />)
                       }
+                      <a href={UEL} target='_blank' style={{ position: `absolute`, width: `100%`, height: `100%` }}></a>
+                    </div>
+                    <div className='chat-input-file-name'>
+                      <a>
+                        {
+                          file.name
+                        }
+                      </a>
                     </div>
                     <button
                       type="button"
@@ -760,13 +785,24 @@ const ChatInput = ({
                 {showQuestionTypeSelector && (
                   <div className="chat-input-question-type-dropdown">
                     {questionTypeOptions.map((option) => {
+                      
                       const handleOptionClick = () => {
                         if (option.locked && !canAccessLockedOptions) {
-                          setIsAccountModalOpen(true);
-                          navigate('/plans')
-                          return;
+                        setIsAccountModalOpen(true);
 
-                        }
+
+                        return;
+
+                      }
+                      if(!option.locked && canAccessLockedOptions && canAccessLockedOptions < 3){
+                        
+                        setIsAccountModalOpen(true);
+                        setModalVIP(true);
+
+                        return
+
+                      }
+                      
                         setManualQuestionType(option.value);
                         // Store questionType in localStorage to persist after login
                         localStorage.setItem(

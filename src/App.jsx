@@ -29,6 +29,8 @@ import FunctionsList from './pages/FunctionsList';
 import Login from './pages/Login';
 import Chat from './pages/Chat';
 import PaymentResult from './pages/PaymentResult';
+import Learning from './pages/Learning';
+import VIPlans from './pages/VIPlans';
 
 function AppContent() {
   const location = useLocation();
@@ -155,11 +157,13 @@ function AppContent() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/chat/:chatId" element={<Chat />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/vip" element={<VIPlans/>} />
           <Route path="/problem-solver" element={<Home />} />
           <Route path="/pdf-helper" element={<PdfHelper />} />
           <Route path="/quiz-maker" element={<QuizMaker />} />
           <Route path="/book-chat" element={<BookChat />} />
           <Route path="/summarizer" element={<Summarizer />} />
+          <Route path="/learning" element={<Learning/>}/>
           <Route path="/functions-list" element={<FunctionsList />} />
           <Route path="/payment/:status" element={<PaymentResult />} />
           <Route path="/payment/callback" element={<PaymentResult />} />
@@ -180,9 +184,12 @@ function App() {
 
   const [spacediv, setspace] = useState(false);
 
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const [ModalVIP , setModalVIP] = useState(false);
+
   return (
 
-    <context_catch.Provider value={{ spacediv, setspace }}>
+    <context_catch.Provider value={{ spacediv, setspace, isAccountModalOpen, setIsAccountModalOpen, ModalVIP, setModalVIP }}>
       <Router>
         <AppContent />
       </Router>

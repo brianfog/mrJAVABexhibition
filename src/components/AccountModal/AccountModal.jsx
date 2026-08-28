@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../Modal/Modal';
 import './AccountModal.css';
 
-const AccountModal = ({ isOpen, onClose, onNavigateToPlans }) => {
+const AccountModal = ({ isOpen, onClose, onNavigateToPlans, VIPModal}) => {
   const navigate = useNavigate();
 
   const handleAccountTypes = () => {
@@ -12,7 +12,7 @@ const AccountModal = ({ isOpen, onClose, onNavigateToPlans }) => {
     }
     // Close modal and navigate
     onClose();
-    navigate('/plans');
+    VIPModal ? navigate('/vip') : navigate('/plans');
   };
 
   return (

@@ -5,6 +5,8 @@
     { value: 'quiz-maker', label: 'طراحی نمونه سئوال' },
     { value: 'book-chat', label: 'چت با کتاب' },
     { value: 'summarizer', label: 'خلاصه سازی' },
+    { value: 'learning', label: 'آموزش'},
+    { value: 'contest', label: 'مسابقه', locked: true, exclusiveLock: true},
   ];
 
   // Answer mode options

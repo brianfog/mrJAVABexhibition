@@ -1,10 +1,11 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 import { useProfile, useLogout } from '../../hooks/useAuth';
 import { useChatList } from '../../hooks/useChat';
 import { useScrollToTop } from '../../hooks/useScrollToTop';
 import AccountModal from '../AccountModal/AccountModal';
 import './Sidebar.css';
+import context_catch from '../../configureContext';
 
 const Sidebar = ({
   isCollapsed,
@@ -17,7 +18,7 @@ const Sidebar = ({
   const { data: user } = useProfile();
   const logoutMutation = useLogout();
   const { scrollToTop } = useScrollToTop();
-  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const { isAccountModalOpen, setIsAccountModalOpen , setModalVIP, ModalVIP} = useContext(context_catch);
   const isNavigatingToPlansRef = useRef(false);
 
   const { data: chatList } = useChatList();
@@ -30,6 +31,10 @@ const Sidebar = ({
     active:
       location.pathname === `/chat/${chat.id}` || location.pathname === '/chat',
   }));
+
+  const LockedFeatures = ['مسابقه'];
+
+  const VIPFeatures = ['مسابقه'];
 
   const navItems = {
     'منو اصلی': [
@@ -64,13 +69,25 @@ const Sidebar = ({
         path: '/summarizer',
         active: location.pathname === '/summarizer',
       },
+      {
+        icon: null,
+        text: 'آموزش',
+        path: '/learning',
+        active: location.pathname === '/learning',
+      },
+      {
+        icon: null,
+        text: 'مسابقه',
+        path: '/contest',
+        active: location.pathname === '/contest'
+      }
     ],
     گفتگوها: chatListItems,
   };
 
-  const handleBuyCredit = () => {
+  const handleBuyCredit = (VIP) => {
     scrollToTop();
-    navigate('/plans');
+    VIP ? navigate('/vip') : navigate('/plans');
     if (isMobile) {
       onToggle();
     }
@@ -79,9 +96,8 @@ const Sidebar = ({
   return (
     <>
       <aside
-        className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${
-          isMobile ? 'mobile-sidebar' : ''
-        } ${isMobile && isMobileOpen ? 'mobile-sidebar-open' : ''}`}
+        className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobile ? 'mobile-sidebar' : ''
+          } ${isMobile && isMobileOpen ? 'mobile-sidebar-open' : ''}`}
       >
         <div className="sidebar-header">
           <div
@@ -123,11 +139,22 @@ const Sidebar = ({
               >
                 {items?.map((item, index) => {
                   const handleItemClick = (e) => {
-                    const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2;
-                    if (item.text === 'همیار مقاله / PDF' && !canAccessLockedOptions) {
+                    const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2 || Number(user?.type) === 3;
+                    
+                    if ((item.text === 'همیار مقاله / PDF' || item.text === 'مسابقه') && !canAccessLockedOptions) {
                       e.preventDefault();
                       setIsAccountModalOpen(true);
                       if (isMobile) {
+                        onToggle();
+                      }
+                      return;
+                    }
+
+                    if(canAccessLockedOptions < 3 && canAccessLockedOptions && VIPFeatures.includes(item.text)){
+                      e.preventDefault();
+                      setIsAccountModalOpen(true);
+                      setModalVIP(true);
+                      if (isMobile){
                         onToggle();
                       }
                       return;
@@ -143,6 +170,8 @@ const Sidebar = ({
                       '/quiz-maker': 'quiz-maker',
                       '/book-chat': 'book-chat',
                       '/summarizer': 'summarizer',
+                      '/learning': 'learning',
+                      '/contest': 'contest',
                     };
                     const questionTypeForPath =
                       pathToQuestionTypeMap[item.path];
@@ -216,14 +245,25 @@ const Sidebar = ({
               )}
             </div>
           </div>
-          <div className="buy-credit-container" onClick={handleBuyCredit}>
-            <div className="credit-number">{user?.credit ?? ''}</div>
-            <span className="credit-text">شارژ اعتبار</span>
-            <img
-              src="/icons/angle-left.svg"
-              alt="arrow"
-              className="credit-arrow"
-            />
+          <div className='credit-box-container'>
+            <div className="buy-credit-container" onClick={() => handleBuyCredit(false)}>
+              <div className="credit-number">{user?.credit ?? ''}</div>
+              <span className="credit-text">اعتبار</span>
+              <img
+                src="/icons/angle-left.svg"
+                alt="arrow"
+                className="credit-arrow"
+              />
+            </div>
+            <div className="buy-credit-container" onClick={() => handleBuyCredit(true)}>
+              <div className="credit-number">{user?.vipcredit ?? ''}</div>
+              <span className="credit-text">VIP</span>
+              <img
+                src="/icons/angle-left.svg"
+                alt="arrow"
+                className="credit-arrow"
+              />
+            </div>
           </div>
         </div>
       </aside>
@@ -233,10 +273,11 @@ const Sidebar = ({
           isOpen={isAccountModalOpen}
           onClose={() => {
             setIsAccountModalOpen(false);
+            setModalVIP(false);
             // Don't navigate to homepage if we're navigating to plans or already on plans page
             if (
               !isNavigatingToPlansRef.current &&
-              location.pathname !== '/plans'
+              (location.pathname !== '/plans' || '/vip')
             ) {
               scrollToTop();
               navigate('/');
@@ -249,6 +290,7 @@ const Sidebar = ({
           onNavigateToPlans={() => {
             isNavigatingToPlansRef.current = true;
           }}
+          VIPModal={ModalVIP}
         />
       ) : null}
     </>
