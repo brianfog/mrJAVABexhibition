@@ -15,6 +15,14 @@ const AccountModal = ({ isOpen, onClose, onNavigateToPlans, VIPModal}) => {
     VIPModal ? navigate('/vip') : navigate('/plans');
   };
 
+  const VIPObj = {
+
+    title : 'تهیه اشتراک VIP',
+    description : 'برای دسترسی به قابلیت های VIP کلیک کنید',
+    button : 'خرید اشتراک VIP'    
+
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="small">
       <div className="account-modal-content">
@@ -26,14 +34,14 @@ const AccountModal = ({ isOpen, onClose, onNavigateToPlans, VIPModal}) => {
           />
         </div>
 
-        <h2 className="account-modal-title">تهیه حساب کاربری</h2>
+        <h2 className="account-modal-title" style={{color: VIPModal ? '#e80000' : '#0260eb' }}>{VIPModal ? VIPObj.title : 'تهیه حساب کاربری'}</h2>
 
         <p className="account-modal-description">
-          پس از تایید می توانید به حساب کاربری خود دسترسی پیدا کنید
+          { VIPModal ? VIPObj.description : 'پس از تایید می توانید به حساب کاربری خود دسترسی پیدا کنید'}
         </p>
 
-        <button className="account-modal-button" onClick={handleAccountTypes}>
-          انواع حساب های کاربری
+        <button className="account-modal-button" style={{background : VIPModal ? '#e80000' : '#0260eb'}} onClick={handleAccountTypes}>
+          { VIPModal ? VIPObj.button : 'انواع حساب های کاربری'}
           <img
             src="/icons/arrow-circle-left.svg"
             alt=""

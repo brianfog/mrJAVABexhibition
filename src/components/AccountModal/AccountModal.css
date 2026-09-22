@@ -23,7 +23,6 @@
 }
 
 .account-modal-title {
-  color: #0260eb;
   text-align: center;
   font-size: 20px;
   font-weight: 500;
@@ -48,7 +47,6 @@
   gap: 8px;
   width: 100%;
   padding: 12px 24px;
-  background: #0260eb;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -60,7 +58,7 @@
 }
 
 .account-modal-button:hover {
-  background: #0250d0;
+  opacity: 0.9;
   transform: translateY(-2px);
 }
 

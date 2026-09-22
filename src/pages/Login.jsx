@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useVerifyOTP } from '../hooks/useAuth';
@@ -19,6 +19,61 @@ const Login = () => {
   const [error, setError] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputRef = useRef(null);
+
+  const [time , SetTime] = useState({ second : 59, minute : 1});
+  const [RequestOTP, SetRequestOTP] = useState(true);
+
+  const IntervalID = useRef(null);
+
+  const TimerStart = () => {
+   IntervalID.current = setInterval(() => {
+
+    SetTime(prev => {
+      if(prev.second === 0 && prev.minute === 0){
+        clearInterval(IntervalID.current);
+        IntervalID.current = null;
+        SetRequestOTP(false);
+        return prev;
+      }
+      if (prev.second === 0){
+        return { second : 59 , minute : prev.minute - 1};
+      }
+      return {second : prev.second - 1 , minute : prev.minute};
+    })
+
+    }, 1000);
+
+  }
+
+  const ResendOTP = async () => {
+    //if(!mobile) return;
+    if(RequestOTP) return;
+    SetTime({second: 59, minute: 1});
+    SetRequestOTP(true);
+    try {
+      const recaptchaToken = await getRecaptchaToken('send_otp');
+
+      if (!recaptchaToken) {
+        throw new Error('کد امنیتی تولید نشد. لطفا دوباره تلاش کنید.');
+      }
+
+      await sendOTP(mobile, 'TEST');
+      setStep(2);
+    } catch (err) {
+      console.error('reCAPTCHA or API error:', err);
+      setError(err.message || 'خطا در ارسال کد تایید');
+    }
+  }
+
+
+  useEffect(() => {
+
+    RequestOTP && TimerStart();
+    return () => {
+      clearInterval(IntervalID.current);
+      IntervalID.current = null;
+    }
+  },[RequestOTP])
 
   const formatMobileForDisplay = (mobileNumber) => {
     const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
@@ -251,6 +306,13 @@ const Login = () => {
           کد ارسال شده به {formatMobileForDisplay(mobile)} را وارد کنید
         </p>
 
+        <p className='login-otp-description'>
+       { 'کد را دریافت نکردید ؟   ' }
+        {RequestOTP ? (<>{time.minute.toString().padStart(2,'0')}:
+        {time.second.toString().padStart(2,'0')}</>) : (<span className='login-OTPResend' onClick={ResendOTP}>ارسال دوباره</span>)}
+       
+        </p>
+
         <p className="login-edit-mobile">
           شماره تماس اشتباه است؟{' '}
           <button
@@ -299,7 +361,7 @@ const Login = () => {
         </button>
       </div>
       <div className="login-container">
-        {step === 1 ? renderMobileStep() : renderOTPStep()}
+        {step === 2 ? renderMobileStep() : renderOTPStep()}
 
         <div className="login-image-column">
           <div className="login-image-placeholder">

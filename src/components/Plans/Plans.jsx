@@ -6,12 +6,13 @@ import { paymentService } from '../../services/paymentService';
 import './Plans.css';
 import { PLANS_DATA_nonVIP , PLANS_DATA_VIP } from './constants';
 
+
 const Plans = ({VIP}) => {
   const navigate = useNavigate();
   const { data: user } = useProfile();
   const { showToast } = useToast();
   const [loadingPlanId, setLoadingPlanId] = useState(null);
-  const [PLANS_DATA, setPLANS] = useState(VIP ? PLANS_DATA_VIP : PLANS_DATA_nonVIP)
+  const [PLANS_DATA] = useState(VIP ? PLANS_DATA_VIP : PLANS_DATA_nonVIP)
 
   const handlePlanClick = async (plan) => {
     if (!user) {
@@ -50,7 +51,7 @@ const Plans = ({VIP}) => {
     <section className="plans-section">
       <div className="plans-container">
         <h2 className="plans-title">انواع حساب کاربری</h2>
-        <div className="plans-grid">
+        <div className="plans-grid"> 
           {PLANS_DATA.map((plan, index) => (
             <div
               key={plan.planId || `${plan.id}-${index}`}

@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect, use} from 'react';
 import context_catch from './configureContext';
 import {
   BrowserRouter as Router,
@@ -31,6 +31,7 @@ import Chat from './pages/Chat';
 import PaymentResult from './pages/PaymentResult';
 import Learning from './pages/Learning';
 import VIPlans from './pages/VIPlans';
+import Challenge from './pages/Challenge';
 
 function AppContent() {
   const location = useLocation();
@@ -163,7 +164,8 @@ function AppContent() {
           <Route path="/quiz-maker" element={<QuizMaker />} />
           <Route path="/book-chat" element={<BookChat />} />
           <Route path="/summarizer" element={<Summarizer />} />
-          <Route path="/learning" element={<Learning/>}/>
+          <Route path="/visual-learning" element={<Learning/>}/>
+          <Route path='/challenge' element={<Challenge/>}/>
           <Route path="/functions-list" element={<FunctionsList />} />
           <Route path="/payment/:status" element={<PaymentResult />} />
           <Route path="/payment/callback" element={<PaymentResult />} />
@@ -187,9 +189,13 @@ function App() {
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [ModalVIP , setModalVIP] = useState(false);
 
+  const [ISWrongModalOPen,SetISWrongOpen] = useState(true);
+
+  const [WrongAnswer,SetWrongAnswer] = useState(null);
+
   return (
 
-    <context_catch.Provider value={{ spacediv, setspace, isAccountModalOpen, setIsAccountModalOpen, ModalVIP, setModalVIP }}>
+    <context_catch.Provider value={{ spacediv, setspace, isAccountModalOpen, setIsAccountModalOpen, ModalVIP, setModalVIP,ISWrongModalOPen,SetISWrongOpen,SetWrongAnswer,WrongAnswer }}>
       <Router>
         <AppContent />
       </Router>

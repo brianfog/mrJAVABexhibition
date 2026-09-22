@@ -11,28 +11,21 @@ const Learning = () => {
     const HOW_TO_USE_DATA = [
     {
       number: 1,
-      title: 'خود را برای آموزش آماده کنید.',
+      title: 'از مستر جواب یک سوال بپرسید.',
       description:
-        'سیستم به‌صورت خودکار از آن سؤال طراحی می‌کند، بدون نیاز به هیچ توضیحی!',
-      image: '/images/quiz-maker-1.png',
+        'از مستر جواب یک سوال بپرسید و مستر جواب آن را با تصویر توضیح میدهد.',
+      image: '/images/pdf-2.png',
       reverse: false,
     },
     {
       number: 2,
-      title: 'سئوالت را هوشمندانه بساز !',
+      title: 'مستر جواب آن را شفاف توضیح میدهد.',
       description:
-        'کافی‌ست مطلب یا تصویر موردنظر را بفرستی تا در سه سطح آسان، متوسط و سخت، سؤال تولید شود.',
-      image: '/images/quiz-maker-2.png',
+        'مستر جواب تصاویری تولید میکند که جواب را به خوبی منتقل میکنند.',
+      image: '/images/summarizer-2.png',
       reverse: true,
     },
-    {
-      number: 3,
-      title: 'فقط بنویس و نسبت سختیو مشخص کن !',
-      description:
-        'اگر بخواهی سطح سؤال‌ها بالاتر رود، بنویس «سؤال سخت‌تر طراحی کن» تا سیستم خودش تنظیم کند.',
-      image: '/images/quiz-maker-3.png',
-      reverse: false,
-    },
+    
   ];
 
     return (

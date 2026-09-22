@@ -1,8 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import './ChatActions.css';
 import html2pdf from "html2pdf.js";
+import context_catch from '../../configureContext';
 
-const ChatActions = ({ message, extractPlainText }) => {
+const ChatActions = ({ message, extractPlainText, Challenge }) => {
   const handleCopyToClipboard = useCallback(async () => {
     try {
       // Extract plain text from message content
@@ -85,6 +86,7 @@ const ChatActions = ({ message, extractPlainText }) => {
         type: 'application/msword'
     });
 
+
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -122,6 +124,21 @@ const ChatActions = ({ message, extractPlainText }) => {
     console.log("Create PDF");
   };   
 
+  const {SetWrongAnswer ,SetISWrongOpen} = useContext(context_catch);
+
+  const IsWrong = () => {
+
+    SetISWrongOpen(true);
+
+    const plainText = message.isHTML ? extractPlainText(message.text) : message.text || '';
+   
+    SetWrongAnswer(plainText);
+
+    
+
+
+  }
+
   return (
     <div className="chat-response-actions">
       <div className="chat-response-actions-right">
@@ -140,6 +157,12 @@ const ChatActions = ({ message, extractPlainText }) => {
         <button className="chat-response-action-icon">
           <img src="/icons/dislike.svg" alt="Dislike" />
         </button>
+        {
+          Challenge &&
+           (<button className='chat-response-action-icon' onClick={IsWrong} style={{width:'30px', height: '30px'}}>
+            <img src='/icons/IsWrong.svg' alt='Is False'/>
+          </button>)
+        }
       </div>
       <div className="chat-response-actions-left">
         <button onClick={(e) => createPdf(e.currentTarget)} className="chat-response-action-button pdf">PDF</button>

@@ -23,8 +23,8 @@ const pathToQuestionType = {
   '/quiz-maker': 'quiz-maker',
   '/book-chat': 'book-chat',
   '/summarizer': 'summarizer',
-  '/learning': 'learning',
-  '/contest': 'contest',
+  '/visual-learning': 'visual-learning',
+  '/challenge': 'challenge',
 };
 
 const questionTypeToPath = {
@@ -33,8 +33,8 @@ const questionTypeToPath = {
   'quiz-maker': '/quiz-maker',
   'book-chat': '/book-chat',
   summarizer: '/summarizer',
-  'learning': '/learning',
-  'contest': '/contest',
+  'visual-learning': '/visual-learning',
+  'challenge': '/challenge',
 };
 
 const ChatInput = ({
@@ -201,9 +201,12 @@ const ChatInput = ({
     const htmlRegex = /<\/?[a-z][\s\S]*>/i;
     return htmlRegex.test(str);
   };
-  const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2 || Number(user?.type) === 3;
-
-
+  const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2;
+  const canAccessVIPOptions = {
+    'challenge' : Number(user?.vipcredit?.challenge) > 0,
+    'visual-learning' : Number(user?.vipcredit?.visual) > 0,
+  };
+  //const canAccessVIPOptions = true;
 
   const extractResponseText = (response) => {
     try {
@@ -529,6 +532,17 @@ const ChatInput = ({
       return;
     }
 
+    if(user && !questionType === 'challenge' && user?.credit == 0){
+      setIsAccountModalOpen(true);
+      return;
+    }
+
+    if(questionType === 'challenge' && user?.vipcredit == 0){
+      setIsAccountModalOpen(true);
+      setModalVIP(true);
+      return;
+    }
+
     // If user is logged in but not on chat page, redirect to chat page with the text
     if (!location.pathname.startsWith('/chat')) {
       const formData = {
@@ -591,7 +605,7 @@ const ChatInput = ({
                         return;
 
                       }
-                      if(!option.locked && canAccessLockedOptions && canAccessLockedOptions < 3){
+                      if(option.exclusiveLock && !canAccessVIPOptions[option.value]){
                         
                         setIsAccountModalOpen(true);
                         setModalVIP(true);
@@ -619,7 +633,7 @@ const ChatInput = ({
                         className={`${questionType === option.value ? 'active' : ''} ${option.locked && !canAccessLockedOptions ? 'locked' : ''}`}
                       >
                         {option.label}
-                        {option.locked && !canAccessLockedOptions && (
+                        {(option.locked || option.exclusiveLock) && !canAccessLockedOptions && (
                           <img
                             src="/icons/lock.svg"
                             alt="قفل"
@@ -655,7 +669,7 @@ const ChatInput = ({
                       key={option.value}
                       type="button"
                       onClick={() => {
-                        if (!option.locked || canAccessLockedOptions) {
+                        if (!option.locked || canAccessLockedOptions || !option.exclusiveLock) {
                           setAnswerMode(option.value);
                           setShowAnswerModeSelector(false);
                         }
@@ -665,7 +679,7 @@ const ChatInput = ({
                       <div className="chat-input-answer-mode-content">
                         <div className="chat-input-answer-mode-title">
                           {option.title}
-                          {option.locked && !canAccessLockedOptions && (
+                          {(option.locked || option.exclusiveLock) && !canAccessLockedOptions && (
                             <img
                               src="/icons/lock.svg"
                               alt="قفل"
@@ -794,7 +808,7 @@ const ChatInput = ({
                         return;
 
                       }
-                      if(!option.locked && canAccessLockedOptions && canAccessLockedOptions < 3){
+                      if(!canAccessVIPOptions[option.value] && option.exclusiveLock){
                         
                         setIsAccountModalOpen(true);
                         setModalVIP(true);
@@ -825,7 +839,7 @@ const ChatInput = ({
                           className={`${questionType === option.value ? 'active' : ''} ${option.locked && !canAccessLockedOptions ? 'locked' : ''}`}
                         >
                           {option.label}
-                          {option.locked && !canAccessLockedOptions && (
+                          {(option.locked || option.exclusiveLock) && !canAccessLockedOptions && (
                             <img
                               src="/icons/lock.svg"
                               alt="قفل"

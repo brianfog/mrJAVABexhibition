@@ -6,6 +6,7 @@ import { useScrollToTop } from '../../hooks/useScrollToTop';
 import AccountModal from '../AccountModal/AccountModal';
 import './Sidebar.css';
 import context_catch from '../../configureContext';
+import IsWrongModal from '../IsWrongModal/ISWrong';
 
 const Sidebar = ({
   isCollapsed,
@@ -18,7 +19,7 @@ const Sidebar = ({
   const { data: user } = useProfile();
   const logoutMutation = useLogout();
   const { scrollToTop } = useScrollToTop();
-  const { isAccountModalOpen, setIsAccountModalOpen , setModalVIP, ModalVIP} = useContext(context_catch);
+  const { isAccountModalOpen, setIsAccountModalOpen, setModalVIP, ModalVIP ,ISWrongModalOPen, SetISWrongOpen } = useContext(context_catch);
   const isNavigatingToPlansRef = useRef(false);
 
   const { data: chatList } = useChatList();
@@ -32,9 +33,14 @@ const Sidebar = ({
       location.pathname === `/chat/${chat.id}` || location.pathname === '/chat',
   }));
 
+  const VIPScores = {
+    'مسابقه': Number(user?.vipcredit?.challenge),
+    'آموزش تصویری': Number(user?.vipcredit?.visual),
+  };
+
   const LockedFeatures = ['مسابقه'];
 
-  const VIPFeatures = ['مسابقه'];
+  const VIPFeatures = ['مسابقه', 'آموزش تصویری'];
 
   const navItems = {
     'منو اصلی': [
@@ -70,16 +76,16 @@ const Sidebar = ({
         active: location.pathname === '/summarizer',
       },
       {
-        icon: null,
-        text: 'آموزش',
-        path: '/learning',
-        active: location.pathname === '/learning',
+        icon: 'icons/Vis-learning.svg',
+        text: 'آموزش تصویری',
+        path: '/visual-learning',
+        active: location.pathname === '/visual-learning',
       },
       {
-        icon: null,
+        icon: 'icons/timer.svg',
         text: 'مسابقه',
-        path: '/contest',
-        active: location.pathname === '/contest'
+        path: '/challenge',
+        active: location.pathname === '/challenge'
       }
     ],
     گفتگوها: chatListItems,
@@ -139,9 +145,15 @@ const Sidebar = ({
               >
                 {items?.map((item, index) => {
                   const handleItemClick = (e) => {
-                    const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2 || Number(user?.type) === 3;
-                    
-                    if ((item.text === 'همیار مقاله / PDF' || item.text === 'مسابقه') && !canAccessLockedOptions) {
+                    const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2;
+                    const canAccessVIPOptions = {
+                      'مسابقه': Number(user?.vipcredit?.challenge) > 0,
+                      'آموزش تصویری': Number(user?.vipcredit?.visual) > 0,
+                    };
+
+
+
+                    if ((item.text === 'همیار مقاله / PDF') && !canAccessLockedOptions) {
                       e.preventDefault();
                       setIsAccountModalOpen(true);
                       if (isMobile) {
@@ -150,11 +162,11 @@ const Sidebar = ({
                       return;
                     }
 
-                    if(canAccessLockedOptions < 3 && canAccessLockedOptions && VIPFeatures.includes(item.text)){
+                    if (!canAccessVIPOptions[item.text] && VIPFeatures.includes(item.text)) {
                       e.preventDefault();
                       setIsAccountModalOpen(true);
                       setModalVIP(true);
-                      if (isMobile){
+                      if (isMobile) {
                         onToggle();
                       }
                       return;
@@ -170,8 +182,8 @@ const Sidebar = ({
                       '/quiz-maker': 'quiz-maker',
                       '/book-chat': 'book-chat',
                       '/summarizer': 'summarizer',
-                      '/learning': 'learning',
-                      '/contest': 'contest',
+                      '/visual-learning': 'visual-learning',
+                      '/challenge': 'challenge',
                     };
                     const questionTypeForPath =
                       pathToQuestionTypeMap[item.path];
@@ -204,6 +216,7 @@ const Sidebar = ({
                         className="nav-icon"
                       />
                       <span className="nav-text">{item.text}</span>
+                      {VIPFeatures.includes(item.text) && (<span style={{position:'absolute',left: '20px'}}>{VIPScores[item.text] || 0}</span>)}
                     </Link>
                   );
                 })}
@@ -256,7 +269,7 @@ const Sidebar = ({
               />
             </div>
             <div className="buy-credit-container" onClick={() => handleBuyCredit(true)}>
-              <div className="credit-number">{user?.vipcredit ?? ''}</div>
+              <div className="credit-number">{(user?.vipcredit?.visual + user?.vipcredit?.challenge) || ''}</div>
               <span className="credit-text">VIP</span>
               <img
                 src="/icons/angle-left.svg"
@@ -293,6 +306,7 @@ const Sidebar = ({
           VIPModal={ModalVIP}
         />
       ) : null}
+      <IsWrongModal isOPen={ISWrongModalOPen} onClose={() => SetISWrongOpen(false)}/>
     </>
   );
 };

@@ -15,6 +15,8 @@ const getPromptName = (questionType) => {
     'quiz-maker': 'طراحی نمونه سوال',
     'book-chat': 'چت با کتاب',
     summarizer: 'خلاصه سازی',
+    'visual-learning': 'آموزش تصویری',
+    'challenge': 'مسابقه' ,
   };
   return promptMap[questionType] || promptMap['problem-solver'];
 };

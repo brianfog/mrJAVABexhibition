@@ -717,6 +717,7 @@ const Chat = () => {
                           <ChatActions
                             message={message}
                             extractPlainText={extractPlainText}
+                            Challenge={localStorage.getItem('SelectedQuestionType') === 'challenge'}
                           />
                         )}
                       </div>
