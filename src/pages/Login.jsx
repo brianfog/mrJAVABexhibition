@@ -361,7 +361,7 @@ const Login = () => {
         </button>
       </div>
       <div className="login-container">
-        {step === 2 ? renderMobileStep() : renderOTPStep()}
+        {step === 1 ? renderMobileStep() : renderOTPStep()}
 
         <div className="login-image-column">
           <div className="login-image-placeholder">
