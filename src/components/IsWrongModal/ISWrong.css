@@ -3,11 +3,13 @@
 .Wrong_Answer h1 {
 
     margin-bottom: 10px;
+    color: red;
 
 }
 
 .Correct_Answer{
     width: 100%;
+    color: #0d6efd;
 }
 
 .Correct_Answer h1 {
@@ -21,6 +23,8 @@
     font-size: 16px;
     padding: 5px 8px;
     border-radius: 14px;
+    border: 1px solid gray;
+    color: black;
 }
 
 .Correct_Answer textarea:focus{

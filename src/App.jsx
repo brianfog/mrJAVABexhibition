@@ -189,7 +189,7 @@ function App() {
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [ModalVIP , setModalVIP] = useState(false);
 
-  const [ISWrongModalOPen,SetISWrongOpen] = useState(true);
+  const [ISWrongModalOPen,SetISWrongOpen] = useState(false);
 
   const [WrongAnswer,SetWrongAnswer] = useState(null);
 

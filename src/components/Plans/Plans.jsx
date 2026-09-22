@@ -52,6 +52,7 @@ const Plans = ({VIP}) => {
       <div className="plans-container">
         <h2 className="plans-title">انواع حساب کاربری</h2>
         <div className="plans-grid"> 
+          
           {PLANS_DATA.map((plan, index) => (
             <div
               key={plan.planId || `${plan.id}-${index}`}
