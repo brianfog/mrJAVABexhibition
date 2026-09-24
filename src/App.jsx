@@ -187,15 +187,23 @@ function App() {
   const [spacediv, setspace] = useState(false);
 
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+
   const [ModalVIP , setModalVIP] = useState(false);
 
   const [ISWrongModalOPen,SetISWrongOpen] = useState(false);
 
   const [WrongAnswer,SetWrongAnswer] = useState(null);
 
+  const [Global_ChatID, SetGlobalChatID] = useState(null);
+
   return (
 
-    <context_catch.Provider value={{ spacediv, setspace, isAccountModalOpen, setIsAccountModalOpen, ModalVIP, setModalVIP,ISWrongModalOPen,SetISWrongOpen,SetWrongAnswer,WrongAnswer }}>
+    <context_catch.Provider 
+    value={{ Global_ChatID,SetGlobalChatID,spacediv, setspace,
+    isAccountModalOpen, setIsAccountModalOpen, ModalVIP,
+    setModalVIP,ISWrongModalOPen,SetISWrongOpen
+    ,SetWrongAnswer,WrongAnswer }}
+    >
       <Router>
         <AppContent />
       </Router>

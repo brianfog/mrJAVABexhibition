@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, useContext } from 'react';
 import Hero from '../components/Hero/Hero';
 import ChatInput from '../components/ChatInput/ChatInput';
 import ChatActions from '../components/ChatActions/ChatActions';
@@ -11,12 +11,13 @@ import './Chat.css';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import context_catch from '../configureContext';
 const Chat = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { chatId } = useParams();
   const { data: chatData, isLoading, error } = useReadChat(chatId || null);
-
+  const {SetGlobalChatID} = useContext(context_catch);
   const [messages, setMessages] = useState(() => {
     // Don't initialize with pendingSubmission here - let ChatInput handle it via onSubmit
     // This ensures loading state can be properly added without interference
@@ -70,6 +71,13 @@ const Chat = () => {
     if (isReload) {
       navigate('/', { replace: true });
     }
+  
+    if(chatId) {
+      
+      SetGlobalChatID(chatId);
+
+    }
+
   }, [
     location.pathname,
     location.state,
@@ -77,6 +85,7 @@ const Chat = () => {
     messages.length,
     isLoading,
     navigate,
+    SetGlobalChatID
   ]);
 
   // Helper function to remove markdown code block markers and clean HTML

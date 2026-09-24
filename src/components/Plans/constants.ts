@@ -130,9 +130,9 @@ export const PLANS_DATA_VIP = [
     },
     {
       id: 'master',
-      name: 'چالش',
+      name: 'آموزش تصویری',
       subtitle: 'به صرفه',
-      planId: 2001,
+      planId: 2002,
       price: '150 هزار تومان',
       priceType: 'به صورت ماهانه',
       originalPrice: null,

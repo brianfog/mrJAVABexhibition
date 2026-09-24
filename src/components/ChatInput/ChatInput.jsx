@@ -503,7 +503,9 @@ const ChatInput = ({
   };
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
+    
     /*
     if (!question.trim() && uploadedFiles.length === 0) {
       return;
@@ -537,7 +539,7 @@ const ChatInput = ({
       return;
     }
 
-    if(questionType === 'challenge' && user?.vipcredit == 0){
+    if((questionType === 'challenge' && user?.vipcredit?.challenge === 0) || (questionType === 'visual-learning' && user?.vipcredit?.visual === 0)){
       setIsAccountModalOpen(true);
       setModalVIP(true);
       return;

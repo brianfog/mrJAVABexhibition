@@ -1,7 +1,11 @@
 
+.Wrong_Answer{
+    width: 100%;
+    height: max-content;
+}
 
 .Wrong_Answer h1 {
-
+    font-size: 25px;
     margin-bottom: 10px;
     color: red;
 
@@ -14,15 +18,17 @@
 
 .Correct_Answer h1 {
     margin-bottom: 10px;
+    font-size: 25px;
 }
 
 .Correct_Answer textarea {
     width: 100%;
     resize: none;
-    min-height: 100px;
+    min-height: 150px;
     font-size: 16px;
+    font-family: 'Yekan Bakh';
     padding: 5px 8px;
-    border-radius: 14px;
+    border-radius: 8px;
     border: 1px solid gray;
     color: black;
 }
