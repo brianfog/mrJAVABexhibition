@@ -14,10 +14,11 @@
 .Correct_Answer{
     width: 100%;
     color: #0d6efd;
+    height: max-content;
 }
 
 .Correct_Answer h1 {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 25px;
 }
 
@@ -57,4 +58,10 @@
 
 .Send-Correction:active{
     opacity: 0.5;
+}
+
+.Send-Correction:disabled{
+
+    opacity: 0.5;
+
 }

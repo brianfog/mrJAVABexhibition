@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Modal from "../Modal/Modal";
 import './ISWrong.css';
 import context_catch from "../../configureContext";
@@ -11,6 +11,9 @@ const {WrongAnswer, Global_ChatID} = useContext(context_catch);
 
 const [CorrectA, setCorrectA] = useState('');
 
+const [Loading , SetLoading] = useState(false);
+
+const SendWrongRef = useRef(null);
 
 const SendWrong = async () => {
 
@@ -22,9 +25,28 @@ const SendWrong = async () => {
         'note': `${CorrectA}`,
     }
 
-    const Response = await apiRequest(`/challenge-notes`, {method: 'POST', body : WrongBody});
-    
-    console.log(Response);
+    SetLoading(true);
+
+    SendWrongRef.current.innerText = 'در حال ارسال';
+
+    try{
+
+        const Response= await apiRequest(`/challenge-notes`, {method: 'POST', body : WrongBody});
+
+        if (Response) {
+            SendWrongRef.current.innerText = `ارسال شد`
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+        SetLoading(false);
+
+        SendWrongRef.current.innerText = 'دوباره تلاش کن';
+
+    }
+
 
 }
 
@@ -54,8 +76,10 @@ return (
     </div>
 
     <button
+    ref={SendWrongRef}
     className="Send-Correction"
     onClick={SendWrong}
+    disabled={Loading}
     >
         ارسال
     </button>
