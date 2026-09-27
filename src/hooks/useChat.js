@@ -78,6 +78,12 @@ export const useSendMessage = () => {
         old ? {...old , credit : response.credit} : old)
       }
 
+      
+      if(response?.vipcredit !== undefined){
+        queryClient.setQueryData(authKeys.profile(),(old) => 
+        old ? {...old , vipcredit : response.vipcredit} : old)
+      }
+
       if (response.chat_id) {
         queryClient.invalidateQueries({
           queryKey: chatKeys.chat(response.chat_id),
