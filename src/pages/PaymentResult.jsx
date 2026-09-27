@@ -5,6 +5,8 @@ import { useToast } from '../contexts/ToastContext';
 import { useProfile } from '../hooks/useAuth';
 import './PaymentResult.css';
 import Hero from '../components/Hero/Hero';
+import { useQueryClient } from '@tanstack/react-query';
+import { authKeys } from '../hooks/useAuth';
 
 const PaymentResult = () => {
   const { status } = useParams();
@@ -19,7 +21,7 @@ const PaymentResult = () => {
   const orderId = searchParams.get('order');
   const authority = searchParams.get('Authority');
   const zarinpalStatus = searchParams.get('Status');
-
+  const queryClient = useQueryClient();
   // Verify payment if callback params exist
   useEffect(() => {
     const verifyPayment = async () => {
@@ -42,6 +44,19 @@ const PaymentResult = () => {
             credit: response.credit,
             message: response.message,
           });
+
+          if (response?.credit !== undefined) {
+            queryClient.setQueryData(authKeys.profile(), (old) =>
+              old ? { ...old, credit: response.credit } : old)
+          }
+
+
+          if (response?.vipcredit !== undefined) {
+            queryClient.setQueryData(authKeys.profile(), (old) =>
+              old ? { ...old, vipcredit: response.vipcredit } : old)
+          }
+
+
 
           if (response.token) {
             localStorage.setItem('chat_token', response.token);

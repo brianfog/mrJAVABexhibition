@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { chatService } from '../services/chatService';
 import { getToken } from '../services/api';
+import { authKeys } from './useAuth';
 
 export const chatKeys = {
   all: ['chat'],
@@ -71,6 +72,11 @@ export const useSendMessage = () => {
     mutationFn: (data) => chatService.sendMessage(data),
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: chatKeys.list() });
+
+      if(response?.credit !== undefined){
+        queryClient.setQueryData(authKeys.profile(),(old) => 
+        old ? {...old , credit : response.credit} : old)
+      }
 
       if (response.chat_id) {
         queryClient.invalidateQueries({
