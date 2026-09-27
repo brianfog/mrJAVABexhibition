@@ -39,7 +39,7 @@ const questionTypeToPath = {
 
 const ChatInput = ({
   disabled = false,
-  chatId=null,
+  chatId = null,
   previousMsg,
   onSubmit,
 }) => {
@@ -55,7 +55,7 @@ const ChatInput = ({
   const { showToast } = useToast();
   const [question, setQuestion] = useState('');
   const [answerMode, setAnswerMode] = useState('quick');
-  const { setIsAccountModalOpen ,setModalVIP } = useContext(context_catch);
+  const { setIsAccountModalOpen, setModalVIP } = useContext(context_catch);
   useEffect(() => {
     const pendingOfferValue = localStorage.getItem('pendingOfferValue');
     if (pendingOfferValue) {
@@ -99,6 +99,7 @@ const ChatInput = ({
     useState(false);
   const [showAnswerModeSelector, setShowAnswerModeSelector] = useState(false);
   const fileInputRef = useRef(null);
+  const soundInputRef = useRef(null);
   const textareaRef = useRef(null);
   const problemBtnRef = useRef(null);
   const quickBtnRef = useRef(null);
@@ -188,9 +189,11 @@ const ChatInput = ({
     e.target.value = "";
   };
 
-  const handleUploadClick = () => {
-    fileInputRef.current?.click();
+  const handleUploadClick = (InputRef) => {
+    if (!InputRef.current) return;
+    InputRef?.current?.click();
   };
+
 
   const handleRemoveFile = (index) => {
     setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
@@ -203,8 +206,8 @@ const ChatInput = ({
   };
   const canAccessLockedOptions = Number(user?.type) === 1 || Number(user?.type) === 2;
   const canAccessVIPOptions = {
-    'challenge' : Number(user?.vipcredit?.challenge) > 0,
-    'visual-learning' : Number(user?.vipcredit?.visual) > 0,
+    'challenge': Number(user?.vipcredit?.challenge) > 0,
+    'visual-learning': Number(user?.vipcredit?.visual) > 0,
   };
   //const canAccessVIPOptions = true;
 
@@ -503,9 +506,9 @@ const ChatInput = ({
   };
 
   const handleSubmit = async (e) => {
-    
+
     e.preventDefault();
-    
+
     /*
     if (!question.trim() && uploadedFiles.length === 0) {
       return;
@@ -534,12 +537,12 @@ const ChatInput = ({
       return;
     }
 
-    if(user && !questionType === 'challenge' && user?.credit == 0){
+    if (user && !questionType === 'challenge' && user?.credit == 0) {
       setIsAccountModalOpen(true);
       return;
     }
 
-    if((questionType === 'challenge' && user?.vipcredit?.challenge === 0) || (questionType === 'visual-learning' && user?.vipcredit?.visual === 0)){
+    if ((questionType === 'challenge' && user?.vipcredit?.challenge === 0) || (questionType === 'visual-learning' && user?.vipcredit?.visual === 0)) {
       setIsAccountModalOpen(true);
       setModalVIP(true);
       return;
@@ -607,15 +610,15 @@ const ChatInput = ({
                         return;
 
                       }
-                      if(option.exclusiveLock && !canAccessVIPOptions[option.value]){
-                        
+                      if (option.exclusiveLock && !canAccessVIPOptions[option.value]) {
+
                         setIsAccountModalOpen(true);
                         setModalVIP(true);
 
                         return
 
                       }
-                      
+
                       setManualQuestionType(option.value);
                       setShowQuestionTypeSelector(false);
 
@@ -743,7 +746,7 @@ const ChatInput = ({
 
                     <div className='chat-input-file-vis'>
                       {
-                        (<img src={file.type.startsWith('image/') ? UEL : doc_ico} alt={file.name} style={{ background: file.type.startsWith('image/') ? `black` : `none` }} />)
+                        (<img src={file.type.startsWith('image/') ? UEL : file.type.startsWith('audio/') ? '/icons/SoundTypeIcon.svg' : doc_ico} alt={file.name} style={{ background: file.type.startsWith('image/') ? `black` : 'none' }} />)
                       }
                       <a href={UEL} target='_blank' style={{ position: `absolute`, width: `100%`, height: `100%` }}></a>
                     </div>
@@ -801,24 +804,24 @@ const ChatInput = ({
                 {showQuestionTypeSelector && (
                   <div className="chat-input-question-type-dropdown">
                     {questionTypeOptions.map((option) => {
-                      
+
                       const handleOptionClick = () => {
                         if (option.locked && !canAccessLockedOptions) {
-                        setIsAccountModalOpen(true);
+                          setIsAccountModalOpen(true);
 
 
-                        return;
+                          return;
 
-                      }
-                      if(!canAccessVIPOptions[option.value] && option.exclusiveLock){
-                        
-                        setIsAccountModalOpen(true);
-                        setModalVIP(true);
+                        }
+                        if (!canAccessVIPOptions[option.value] && option.exclusiveLock) {
 
-                        return
+                          setIsAccountModalOpen(true);
+                          setModalVIP(true);
 
-                      }
-                      
+                          return
+
+                        }
+
                         setManualQuestionType(option.value);
                         // Store questionType in localStorage to persist after login
                         localStorage.setItem(
@@ -907,25 +910,47 @@ const ChatInput = ({
 
               <button
                 type="button"
-                onClick={handleUploadClick}
-                className="chat-input-camera-btn"
+                onClick={() => handleUploadClick(fileInputRef)}
+                className="chat-input-btn"
                 disabled={disabled}
                 aria-label="آپلود تصویر"
               >
                 <img src="/icons/camera.svg" alt="دوربین" />
               </button>
+
+              <button
+                type="button"
+                onClick={() => handleUploadClick(soundInputRef)}
+                className="chat-input-btn"
+                disabled={disabled}
+                aria-label="آپلود صوت"
+              >
+                <img src="/icons/UploadSound.svg" alt="صوت" />
+              </button>
+
+
             </div>
+            <div className='chat-input-mobile-container'>
+              <button
+                type="button"
+                onClick={() => handleUploadClick(fileInputRef)}
+                className="chat-input-btn"
+                disabled={disabled}
+                aria-label="آپلود تصویر"
+              >
+                <img src="/icons/camera.svg" alt="دوربین" />
+              </button>
 
-            <button
-              type="button"
-              onClick={handleUploadClick}
-              className="chat-input-camera-btn chat-input-mobile-camera"
-              disabled={disabled}
-              aria-label="آپلود تصویر"
-            >
-              <img src="/icons/camera.svg" alt="دوربین" />
-            </button>
-
+              <button
+                type="button"
+                onClick={() => handleUploadClick(soundInputRef)}
+                className="chat-input-btn"
+                disabled={disabled}
+                aria-label="آپلود صوت"
+              >
+                <img src="/icons/UploadSound.svg" alt="صوت" />
+              </button>
+            </div>
             <input
               ref={fileInputRef}
               type="file"
@@ -934,6 +959,16 @@ const ChatInput = ({
               onChange={handleFileChange}
               className="chat-input-file-input"
               aria-label="انتخاب فایل"
+            />
+
+            <input
+              ref={soundInputRef}
+              type='file'
+              accept='audio/*'
+              multiple
+              onChange={handleFileChange}
+              className='chat-input-file-input'
+              aria-label='انتخاب صوت'
             />
 
             <button

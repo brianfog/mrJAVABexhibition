@@ -610,7 +610,15 @@ const Chat = () => {
           <span>{file.name}</span>
         </div>
       );
-    } else {
+    }else if (filesType?.startsWith('audio/')){
+      return(
+        <img
+        src='/icons/SoundTypeIcon.svg'
+        alt={file.name}
+        style={{maxWidth:'300px', maxHeight:'300px'}}
+        />
+      )
+    }else {
       return (
         <div className="chat-response-file-preview-generic">
           <svg

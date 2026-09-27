@@ -75,7 +75,7 @@
     display: none !important;
   }
 
-  .chat-input-mobile-camera {
+  .chat-input-mobile-container {
     display: none !important;
   }
 }
@@ -430,7 +430,7 @@
 }
 
 /* Camera button */
-.chat-input-camera-btn {
+.chat-input-btn {
   position: relative;
   display: flex;
   padding: 4px;
@@ -444,19 +444,22 @@
   flex-shrink: 0;
 }
 
-.chat-input-camera-btn:hover:not(:disabled) {
+.chat-input-btn:hover:not(:disabled) {
   opacity: 0.9;
 }
 
-.chat-input-camera-btn:disabled {
+.chat-input-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.chat-input-camera-btn img {
+.chat-input-btn img {
   width: 20px;
   height: 20px;
 }
+
+
+
 
 .chat-input-file-input {
   position: absolute;
@@ -618,8 +621,12 @@
     display: none !important;
   }
 
-  .chat-input-mobile-camera {
+  .chat-input-mobile-container {
     display: flex;
+  }
+
+  .chat-input-btn{
+    margin-left: 8px;
   }
 
   .chat-input-buttons-section {
