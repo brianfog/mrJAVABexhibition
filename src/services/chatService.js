@@ -80,13 +80,14 @@ export const chatService = {
       throw new Error('Authentication required');
     }
 
-    const promptValue = getPromptValue(questionType, prompts);
+    //const promptValue = getPromptValue(questionType, prompts);
 
     const formData = new FormData();
-    formData.append('prompt', promptValue);
+    //formData.append('prompt', promptValue);
     formData.append('user_text', userText);
+    formData.append('questionType', questionType);
     formData.append('token', chatToken);
-    formData.append('model', getModelName(answerMode));
+    //formData.append('model', getModelName(answerMode));
 
     if (chatId) {
       formData.append('chat_id', chatId);
