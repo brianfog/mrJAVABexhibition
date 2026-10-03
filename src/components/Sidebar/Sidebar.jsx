@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import { useProfile, useLogout } from '../../hooks/useAuth';
 import { useChatList } from '../../hooks/useChat';
 import { useScrollToTop } from '../../hooks/useScrollToTop';
@@ -21,7 +21,6 @@ const Sidebar = ({
   const { scrollToTop } = useScrollToTop();
   const { isAccountModalOpen, setIsAccountModalOpen, setModalVIP, ModalVIP ,ISWrongModalOPen, SetISWrongOpen } = useContext(context_catch);
   const isNavigatingToPlansRef = useRef(false);
-
   const { data: chatList } = useChatList();
 
   const chatListItems = chatList?.chats?.map((chat) => ({
@@ -41,6 +40,11 @@ const Sidebar = ({
   const LockedFeatures = ['مسابقه'];
 
   const VIPFeatures = ['مسابقه', 'آموزش تصویری'];
+
+
+  const VIPScore = Object.values(user?.vipcredit ?? {}).reduce((ACC,Vals) => ACC + Number(Vals),0);
+
+ 
 
   const navItems = {
     'منو اصلی': [
@@ -260,7 +264,7 @@ const Sidebar = ({
           </div>
           <div className='credit-box-container'>
             <div className="buy-credit-container" onClick={() => handleBuyCredit(false)}>
-              <div className="credit-number">{user?.credit ?? ''}</div>
+              <div className="credit-number">{user?.credit ?? 0}</div>
               <span className="credit-text">اعتبار</span>
               <img
                 src="/icons/angle-left.svg"
@@ -269,7 +273,7 @@ const Sidebar = ({
               />
             </div>
             <div className="buy-credit-container" onClick={() => handleBuyCredit(true)}>
-              <div className="credit-number">{(user?.vipcredit?.visual + user?.vipcredit?.challenge) || ''}</div>
+              <div className="credit-number">{VIPScore}</div>
               <span className="credit-text">VIP</span>
               <img
                 src="/icons/angle-left.svg"

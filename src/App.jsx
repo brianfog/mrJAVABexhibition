@@ -196,13 +196,16 @@ function App() {
 
   const [Global_ChatID, SetGlobalChatID] = useState(null);
 
+  const [Global_UserScore,SetGlobal_UserScore] = useState(0);
+
   return (
 
     <context_catch.Provider 
     value={{ Global_ChatID,SetGlobalChatID,spacediv, setspace,
     isAccountModalOpen, setIsAccountModalOpen, ModalVIP,
     setModalVIP,ISWrongModalOPen,SetISWrongOpen
-    ,SetWrongAnswer,WrongAnswer }}
+    ,SetWrongAnswer,WrongAnswer,
+    Global_UserScore,SetGlobal_UserScore }}
     >
       <Router>
         <AppContent />

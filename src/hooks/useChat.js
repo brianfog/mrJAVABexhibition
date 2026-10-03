@@ -73,15 +73,24 @@ export const useSendMessage = () => {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: chatKeys.list() });
 
-      if(response?.credit !== undefined){
-        queryClient.setQueryData(authKeys.profile(),(old) => 
-        old ? {...old , credit : response.credit} : old)
+      if (response.remaining) {
+        queryClient.setQueryData(authKeys.profile(), (old) =>
+          old ? { ...old, credit: response.remaining } : old
+        );
       }
 
-      
-      if(response?.vipcredit !== undefined){
-        queryClient.setQueryData(authKeys.profile(),(old) => 
-        old ? {...old , vipcredit : response.vipcredit} : old)
+      if (response.vipcredit) {
+        queryClient.setQueryData(authKeys.profile(), (old) =>
+          old
+            ? {
+                ...old,
+                vipcredit: {
+                  challenge: response.vipcredit.challenge,
+                  visual: response.vipcredit.visual,
+                },
+              }
+            : old
+        );
       }
 
       if (response.chat_id) {

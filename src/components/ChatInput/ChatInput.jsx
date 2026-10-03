@@ -115,6 +115,8 @@ const ChatInput = ({
     }
   }, [question]);
 
+  
+
   // Track container height and dispatch event for offers section adjustment
   useEffect(() => {
     const container = containerRef.current;

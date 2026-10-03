@@ -45,15 +45,15 @@ const PaymentResult = () => {
             message: response.message,
           });
 
-          if (response?.credit !== undefined) {
+          if (response.credit !== undefined) {
             queryClient.setQueryData(authKeys.profile(), (old) =>
               old ? { ...old, credit: response.credit } : old)
           }
 
 
-          if (response?.vipcredit !== undefined) {
+          if (response.vipcredit !== undefined) {
             queryClient.setQueryData(authKeys.profile(), (old) =>
-              old ? { ...old, vipcredit: response.vipcredit } : old)
+              old ? { ...old, vipcredit: {challenge : response.vipcredit.challenge , visual : response.vipcredit.visual} } : old)
           }
 
 
