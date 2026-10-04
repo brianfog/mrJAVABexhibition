@@ -365,7 +365,7 @@ const Chat = () => {
       if (!content) return { text: '', isHTML: false };
 
       let finalText = '';
-
+      let FileObj = {};
       // Try to parse as JSON first (for model responses)
       try {
         const parsed = JSON.parse(content);
@@ -389,9 +389,26 @@ const Chat = () => {
       // Remove markdown code block markers
       finalText = removeMarkdownCodeBlocks(finalText);
 
+      try{
+        const parsedContent = JSON.parse(content);
+
+        if(
+          parsedContent.candidates &&
+          parsedContent.candidates[0]?.content?.parts?.[0]?.inlineData
+        ){
+          FileObj = parsedContent.candidates[0].content.parts[0].inlineData;
+        } else if (typeof parsedContent === 'string'){
+          FileObj = {};
+        }
+      } catch {
+        FileObj = {};
+      }
+
+
       return {
         text: finalText,
         json: datajson,
+        file: FileObj,
         isHTML: isHTML(finalText),
       };
     },
@@ -440,6 +457,8 @@ const Chat = () => {
     }
   }, []);
 
+
+
   // Transform API messages to match the local message format
   const apiMessages = useMemo(() => {
     if (!chatId || !chatData) return [];
@@ -454,6 +473,8 @@ const Chat = () => {
       const content = parseContent(msg.content);
       const attachments = parseJsonString(msg.attachments);
       const files = parseJsonString(msg.files);
+      const contentFiles = content.hasOwnProperty('file');
+    
 
       return {
         id: msg.id,
@@ -463,7 +484,7 @@ const Chat = () => {
         json: content.json,
         sender: msg.sender, // 'user' or 'model'
         files:
-          files.length > 0 ? files : attachments.length > 0 ? attachments : [],
+          files.length > 0 ? files : attachments.length > 0 ? attachments : contentFiles ?? [],
         createdAt: msg.created_at,
         updatedAt: msg.updated_at,
       };
