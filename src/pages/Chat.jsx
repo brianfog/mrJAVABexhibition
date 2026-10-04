@@ -365,23 +365,23 @@ const Chat = () => {
       if (!content) return { text: '', isHTML: false };
 
       let finalText = '';
-      let FileObj = {};
+      let FileObj = [];
       // Try to parse as JSON first (for model responses)
       try {
         const parsed = JSON.parse(content);
         // If it's a JSON object with candidates, extract the text
-        if (
-          parsed.candidates &&
-          parsed.candidates[0]?.content?.parts?.[0]?.text
-        ) {
-          finalText = parsed.candidates[0].content.parts[0].text;
-        } else if (typeof parsed === 'string') {
-          // If it's just a string in JSON, use it
-          finalText = parsed;
-        }
+        const parts = parsed?.candidates?.[0]?.content?.parts ?? [];
+        finalText = parts.filter(Obj => Obj.text).map(txt => txt.text).join('');
+        FileObj = parts.filter(Obj => Obj.inlineData?.data).map((p , i)=> ({
+          mimeType: p.inlineData.mimeType,
+          name: `file-${i + 1}`,
+          url: `data:${p.inlineData.mimeType};base64,${p.inlineData.data}`,
+        }));
+
       } catch {
         // If parsing fails, it's likely a plain string
         finalText = content;
+        FileObj = [];
       }
       let datajson = extractJsonFromMessage(finalText);
       finalText = removeLatex(finalText);
@@ -389,21 +389,7 @@ const Chat = () => {
       // Remove markdown code block markers
       finalText = removeMarkdownCodeBlocks(finalText);
 
-      try{
-        const parsedContent = JSON.parse(content);
-
-        if(
-          parsedContent.candidates &&
-          parsedContent.candidates[0]?.content?.parts?.[0]?.inlineData
-        ){
-          FileObj = parsedContent.candidates[0].content.parts[0].inlineData;
-        } else if (typeof parsedContent === 'string'){
-          FileObj = {};
-        }
-      } catch {
-        FileObj = {};
-      }
-
+     
 
       return {
         text: finalText,
@@ -473,7 +459,7 @@ const Chat = () => {
       const content = parseContent(msg.content);
       const attachments = parseJsonString(msg.attachments);
       const files = parseJsonString(msg.files);
-      const contentFiles = content.hasOwnProperty('file');
+      
     
 
       return {
@@ -484,7 +470,7 @@ const Chat = () => {
         json: content.json,
         sender: msg.sender, // 'user' or 'model'
         files:
-          files.length > 0 ? files : attachments.length > 0 ? attachments : contentFiles ?? [],
+          files.length > 0 ? files : attachments.length > 0 ? attachments : content.file.length > 0 ? content.file : [],
         createdAt: msg.created_at,
         updatedAt: msg.updated_at,
       };
