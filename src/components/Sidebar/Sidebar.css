@@ -211,6 +211,7 @@
 }
 
 .sidebar-footer {
+  z-index: 1;
   padding: 20px;
   border-top: 1px solid #eee;
 }
