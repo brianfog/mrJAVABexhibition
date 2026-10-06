@@ -213,6 +213,24 @@ const ChatInput = ({
   };
   //const canAccessVIPOptions = true;
 
+  const extractResponseFiles = (response) => {
+
+    try{
+      const data = response?.data ?? response
+      const parts = data?.candidates?.[0]?.content?.parts ?? [];
+      const Files = parts.filter(Obj => Obj?.inlineData?.data).map((Obj,index)=> ({
+        mimeType: Obj.inlineData.mimeType,
+        name: `file-${index + 1}`,
+        url: `data:${Obj.inlineData.mimeType};base64,${Obj.inlineData.data}`,
+      }))
+      return Files
+    } catch {
+      //it's probably an empty array
+      return []
+    }
+
+  }
+
   const extractResponseText = (response) => {
     try {
       let text = '';
@@ -336,12 +354,13 @@ const ChatInput = ({
           }
 
           const responseText = extractResponseText(response);
-
+          const responseFiles = extractResponseFiles(response);
           // Always call onSubmit to remove loading state
           if (onSubmit) {
-            if (responseText) {
+            if (responseText || responseFiles.length > 0) {
               onSubmit({
                 text: responseText,
+                files: responseFiles,
                 sender: 'model',
                 isHTML: isHTML(responseText),
               });
@@ -454,12 +473,13 @@ const ChatInput = ({
       });
 
       const responseText = extractResponseText(response);
-
+      const responseFiles = extractResponseFiles(response);
       // Always call onSubmit to remove loading state
       if (onSubmit) {
-        if (responseText) {
+        if (responseText || responseFiles.length > 0) {
           onSubmit({
             text: responseText,
+            files: responseFiles,
             sender: 'model',
             isHTML: isHTML(responseText),
           });

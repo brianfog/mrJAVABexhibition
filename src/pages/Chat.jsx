@@ -470,7 +470,7 @@ const Chat = () => {
         json: content.json,
         sender: msg.sender, // 'user' or 'model'
         files:
-          files.length > 0 ? files : attachments.length > 0 ? attachments : content.file.length > 0 ? content.file : [],
+          files.length > 0 ? files : attachments.length > 0 ? attachments : content.file?.length > 0 ? content.file : [],
         createdAt: msg.created_at,
         updatedAt: msg.updated_at,
       };
@@ -566,6 +566,7 @@ const Chat = () => {
           id,
           text: '',
           json: extractJsonFromMessage(messageData.text),
+          files: messageData.files ?? [],
           sender: 'model',
           isHTML: false,
         },

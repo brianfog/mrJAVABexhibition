@@ -21,7 +21,7 @@ const Login = () => {
   const inputRef = useRef(null);
 
   const [time , SetTime] = useState({ second : 59, minute : 1});
-  const [RequestOTP, SetRequestOTP] = useState(true);
+  const [RequestOTP, SetRequestOTP] = useState(false);
 
   const IntervalID = useRef(null);
 
@@ -154,6 +154,7 @@ const Login = () => {
 
       await sendOTP(mobile, 'TEST');
       setStep(2);
+      SetRequestOTP(true);
     } catch (err) {
       console.error('reCAPTCHA or API error:', err);
       setError(err.message || 'خطا در ارسال کد تایید');
@@ -212,6 +213,8 @@ const Login = () => {
     if (step === 2) {
       // Go back to mobile input step
       setStep(1);
+      SetRequestOTP(false);
+      SetTime({second:59, minute: 1});
       setError('');
     } else {
       // Go to home page
@@ -221,6 +224,8 @@ const Login = () => {
 
   const handleEditMobile = () => {
     setStep(1);
+    SetRequestOTP(false);
+    SetTime({second: 59, minute: 1});
     setError('');
   };
 
