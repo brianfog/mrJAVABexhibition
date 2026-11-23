@@ -986,7 +986,7 @@ const ChatInput = ({
             <input
               ref={soundInputRef}
               type='file'
-              accept='audio/*'
+              accept='.m4a,.mp3,.wav,.ogg,.aac,.flac,.webm,audio/*'
               multiple
               onChange={handleFileChange}
               className='chat-input-file-input'
